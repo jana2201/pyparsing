@@ -20,6 +20,7 @@ from io import StringIO
 from textwrap import dedent
 from typing import Any
 import unittest
+import pyparsing.core as core
 
 import pyparsing as pp
 from examples.jsonParser import jsonObject
@@ -6429,9 +6430,8 @@ class Test02_WithoutPackrat(ppt.TestParseResultsAsserts, TestCase):
             print(stderr_text)
             self.assertTrue(
                 expected_message in stderr_text,
-                f"Expected exception type {expected_message!r} not found in trace_parse_action output"
+                f"Expected exception type {expected_message!r} not found in trace_parse_action output",
             )
-
 
     def testRunTests(self):
         integer = pp.Word(pp.nums).setParseAction(lambda t: int(t[0]))
@@ -10640,6 +10640,26 @@ class Test11_LR1_Recursion(ppt.TestParseResultsAsserts, TestCase):
             expected_list=[".", "abc", "ab", "a", "abc"],
         )
 
+
+lines = [
+    "Branches taken in function generateDefaultName() from class CharsNotIn, in core.py:\n",
+    "40: ",
+    str(core.branches_CharsNotIn_generateDefaultName[40]),
+    "\n",
+    "41: ",
+    str(core.branches_CharsNotIn_generateDefaultName[41]),
+    "\n",
+    "Branches taken in function iand() from class Each, in core.py:\n",
+    "50: ",
+    str(core.branches_Each_iand[50]),
+    "\n",
+    "51: ",
+    str(core.branches_Each_iand[51]),
+    "\n",
+]
+
+with open("coverage_results.txt", "w") as file:
+    file.writelines(lines)
 
 # force clear of packrat parsing flags before saving contexts
 pp.ParserElement._packratEnabled = False
