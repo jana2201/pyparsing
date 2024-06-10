@@ -52,6 +52,8 @@ from .unicode import pyparsing_unicode
 
 _MAX_INT = sys.maxsize
 str_type: Tuple[type, ...] = (str, bytes)
+branches_CharsNotIn_generateDefaultName = {40: False, 41: False}
+branches_Each_iand = {50: False, 51: False}
 
 #
 # Copyright (c) 2003-2022  Paul T. McGuire
@@ -3411,8 +3413,10 @@ class CharsNotIn(Token):
     def _generateDefaultName(self) -> str:
         not_chars_str = _collapse_string_to_ranges(self.notChars)
         if len(not_chars_str) > 16:
+            branches_CharsNotIn_generateDefaultName[40] = True
             return f"!W:({self.notChars[: 16 - 3]}...)"
         else:
+            branches_CharsNotIn_generateDefaultName[41] = True
             return f"!W:({self.notChars})"
 
     def parseImpl(self, instring, loc, doActions=True):
@@ -4377,8 +4381,10 @@ class Each(ParseExpression):
 
     def __iand__(self, other):
         if isinstance(other, str_type):
+            branches_Each_iand[50] = True
             other = self._literalStringClass(other)
         if not isinstance(other, ParserElement):
+            branches_Each_iand[51] = True
             return NotImplemented
         return self.append(other)  # Each([self, other])
 
