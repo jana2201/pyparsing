@@ -3411,6 +3411,7 @@ class CharsNotIn(Token):
         self.mayIndexError = False
 
     def _generateDefaultName(self) -> str:
+        global branches_CharsNotIn_generateDefaultName
         not_chars_str = _collapse_string_to_ranges(self.notChars)
         if len(not_chars_str) > 16:
             branches_CharsNotIn_generateDefaultName[40] = True
@@ -4380,6 +4381,7 @@ class Each(ParseExpression):
         self.saveAsList = True
 
     def __iand__(self, other):
+        global branches_Each_iand
         if isinstance(other, str_type):
             branches_Each_iand[50] = True
             other = self._literalStringClass(other)
@@ -6035,6 +6037,28 @@ def autoname_elements() -> None:
     for name, var in calling_frame.f_locals.items():
         if isinstance(var, ParserElement) and not var.customName:
             var.set_name(name)
+
+
+def printCoverageResults() -> None:
+    lines = [
+        "Branches taken in function generateDefaultName() from class CharsNotIn, in core.py:\n",
+        "40: ",
+        str(branches_CharsNotIn_generateDefaultName[40]),
+        "\n",
+        "41: ",
+        str(branches_CharsNotIn_generateDefaultName[41]),
+        "\n",
+        "Branches taken in function iand() from class Each, in core.py:\n",
+        "50: ",
+        str(branches_Each_iand[50]),
+        "\n",
+        "51: ",
+        str(branches_Each_iand[51]),
+        "\n",
+    ]
+
+    with open("coverage_results.txt", "w") as file:
+        file.writelines(lines)
 
 
 dbl_quoted_string = Combine(
