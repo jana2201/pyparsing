@@ -5444,6 +5444,14 @@ class Test02_WithoutPackrat(ppt.TestParseResultsAsserts, TestCase):
         with self.assertRaisesParseException(msg="issue with CharsNotIn min > tokens"):
             result = consonants.parseString(tst, parseAll=True)
 
+        # default name
+        randomChars = "bdfhjlnprtvxzazjoAGE1234567890!@#$%^&*()_+"
+
+        charsNotIn = pp.CharsNotIn(notChars=randomChars)
+        defaultName = charsNotIn._generateDefaultName()
+
+        self.assertEqual(defaultName, f"!W:({randomChars[: 16 - 3]}...)")
+
     def testParseAll(self):
         testExpr = pp.Word("A")
 
