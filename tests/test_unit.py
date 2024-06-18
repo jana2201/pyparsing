@@ -5821,6 +5821,24 @@ class Test02_WithoutPackrat(ppt.TestParseResultsAsserts, TestCase):
                 result = spec.parseString(test, parseAll=True)
                 self.assertParseResultsEquals(result, expected_dict=expected_dict)
 
+    def testEachIand(self):
+        # other is instance of str_type
+        parser = pp.Keyword("bam") & pp.Keyword("boo")
+        parserCopy = parser
+        testStr = "hey"
+
+        parser &= testStr
+        testStr = parserCopy._literalStringClass(testStr)
+
+        self.assertEqual(parser, parserCopy.append(testStr))
+
+        # other is not instance of str_type and not instance of ParserElement
+        exp = pp.Keyword("cheese") & pp.Keyword("cat")
+        testInt = 10
+
+        with self.assertRaises(TypeError):
+            exp &= testInt
+
     def testSumParseResults(self):
         samplestr1 = "garbage;DOB 10-10-2010;more garbage\nID PARI12345678;more garbage"
         samplestr2 = "garbage;ID PARI12345678;more garbage\nDOB 10-10-2010;more garbage"
