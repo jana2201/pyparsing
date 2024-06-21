@@ -222,6 +222,11 @@ class TestInitWhite(TestCase):
         whitespace_token = pp.White(exact=3)
         self.assertEqual(whitespace_token.maxLen, 3)
         self.assertEqual(whitespace_token.minLen, 3)
+        
+class TestPreParse(TestCase):
+    def testPreParseZero(self):
+        loc = pp.LineStart.preParse(self, "test string", 0)
+        self.assertEqual(loc, 0)
 
 class Test02_WithoutPackrat(ppt.TestParseResultsAsserts, TestCase):
     suite_context = None

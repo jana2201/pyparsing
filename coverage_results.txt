@@ -9,5 +9,5 @@ Branches taken in function __init__() from class White, in core.py:
 61: True
 62: True
 Branches taken in function preParse() from class LineStart, in core.py:
-70: False
+70: True
 71: True
