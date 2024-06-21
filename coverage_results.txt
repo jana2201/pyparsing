@@ -1,0 +1,13 @@
+Branches taken in function generateDefaultName() from class CharsNotIn, in core.py:
+40: True
+41: True
+Branches taken in function iand() from class Each, in core.py:
+50: True
+51: True
+Branches taken in function __init__() from class White, in core.py:
+60: False
+61: True
+62: False
+Branches taken in function preParse() from class LineStart, in core.py:
+70: False
+71: True

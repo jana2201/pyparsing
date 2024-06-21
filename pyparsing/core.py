@@ -54,6 +54,8 @@ _MAX_INT = sys.maxsize
 str_type: Tuple[type, ...] = (str, bytes)
 branches_CharsNotIn_generateDefaultName = {40: False, 41: False}
 branches_Each_iand = {50: False, 51: False}
+branches_init = {60: False, 61: False, 62: False}
+branches_preParse = {70: False, 71: False}
 
 #
 # Copyright (c) 2003-2022  Paul T. McGuire
@@ -3488,12 +3490,15 @@ class White(Token):
 
         if max > 0:
             self.maxLen = max
+            branches_init[60] = True
         else:
             self.maxLen = _MAX_INT
+            branches_init[61] = True
 
         if exact > 0:
             self.maxLen = exact
             self.minLen = exact
+            branches_init[62] = True
 
     def _generateDefaultName(self) -> str:
         return "".join(White.whiteStrs[c] for c in self.matchWhite)
@@ -3588,11 +3593,13 @@ class LineStart(PositionToken):
 
     def preParse(self, instring: str, loc: int) -> int:
         if loc == 0:
+            branches_preParse[70] = True
             return loc
 
         ret = self.skipper.preParse(instring, loc)
 
         if "\n" in self.orig_whiteChars:
+            branches_preParse[71] = True
             while instring[ret : ret + 1] == "\n":
                 ret = self.skipper.preParse(instring, ret + 1)
 
@@ -6054,6 +6061,23 @@ def printCoverageResults() -> None:
         "\n",
         "51: ",
         str(branches_Each_iand[51]),
+        "\n",
+        "Branches taken in function __init__() from class White, in core.py:\n",
+        "60: ",
+        str(branches_init[60]),
+        "\n",
+        "61: ",
+        str(branches_init[61]),
+        "\n",
+        "62: ",
+        str(branches_init[62]),
+        "\n",
+        "Branches taken in function preParse() from class LineStart, in core.py:\n",
+        "70: ",
+        str(branches_preParse[70]),
+        "\n",
+        "71: ",
+        str(branches_preParse[71]),
         "\n",
     ]
 
