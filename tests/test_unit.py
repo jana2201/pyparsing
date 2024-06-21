@@ -212,6 +212,16 @@ class Test01b_PyparsingUnitTestUtilitiesTests(TestCase):
                     except ParseException as pe:
                         pass
 
+class TestInitWhite(TestCase):
+    def testWhiteMaxValue(self):
+        whitespace_token = pp.White(max=5)
+        self.assertEqual(whitespace_token.maxLen, 5)
+        self.assertEqual(whitespace_token.minLen, 1)
+
+    def testWhiteExactValue(self):
+        whitespace_token = pp.White(exact=3)
+        self.assertEqual(whitespace_token.maxLen, 3)
+        self.assertEqual(whitespace_token.minLen, 3)
 
 class Test02_WithoutPackrat(ppt.TestParseResultsAsserts, TestCase):
     suite_context = None
