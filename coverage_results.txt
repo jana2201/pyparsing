@@ -1,9 +1,10 @@
 Branches taken in function generateDefaultName() from class CharsNotIn, in core.py:
 40: True
 41: True
-Branches taken in function iand() from class Each, in core.py:
+Branches taken in function __iand__() from class Each, in core.py:
 50: True
 51: True
+52: True
 Branches taken in function __init__() from class White, in core.py:
 60: True
 61: True

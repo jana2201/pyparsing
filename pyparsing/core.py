@@ -53,7 +53,7 @@ from .unicode import pyparsing_unicode
 _MAX_INT = sys.maxsize
 str_type: Tuple[type, ...] = (str, bytes)
 branches_CharsNotIn_generateDefaultName = {40: False, 41: False}
-branches_Each_iand = {50: False, 51: False}
+branches_Each_iand = {50: False, 51: False, 52: False}
 branches_init = {60: False, 61: False, 62: False}
 branches_preParse = {70: False, 71: False}
 branches_MatchFirst_ior = {10: False, 11: False, 12: False}
@@ -4403,6 +4403,7 @@ class Each(ParseExpression):
         if not isinstance(other, ParserElement):
             branches_Each_iand[51] = True
             return NotImplemented
+        branches_Each_iand[52] = True
         return self.append(other)  # Each([self, other])
 
     def streamline(self) -> ParserElement:
@@ -6063,12 +6064,15 @@ def printCoverageResults() -> None:
         "41: ",
         str(branches_CharsNotIn_generateDefaultName[41]),
         "\n",
-        "Branches taken in function iand() from class Each, in core.py:\n",
+        "Branches taken in function __iand__() from class Each, in core.py:\n",
         "50: ",
         str(branches_Each_iand[50]),
         "\n",
         "51: ",
         str(branches_Each_iand[51]),
+        "\n",
+        "52: ",
+        str(branches_Each_iand[52]),
         "\n",
         "Branches taken in function __init__() from class White, in core.py:\n",
         "60: ",
