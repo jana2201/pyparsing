@@ -58,6 +58,8 @@ branches_init = {60: False, 61: False, 62: False}
 branches_preParse = {70: False, 71: False}
 branches_MatchFirst_ior = {10: False, 11: False, 12: False}
 branches_Or_ixor = {20: False, 21: False, 22: False}
+branches_And_iadd = {80: False, 81: False, 82: False}
+branches_Forward_ilshift = {90: False, 91: False}
 
 #
 # Copyright (c) 2003-2022  Paul T. McGuire
@@ -4039,9 +4041,13 @@ class And(ParseExpression):
 
     def __iadd__(self, other):
         if isinstance(other, str_type):
+            branches_And_iadd[80] = True
             other = self._literalStringClass(other)
         if not isinstance(other, ParserElement):
+            branches_And_iadd[81] = True
             return NotImplemented
+
+        branches_And_iadd[82] = True
         return self.append(other)  # And([self, other])
 
     def _checkRecursion(self, parseElementList):
@@ -5434,8 +5440,10 @@ class Forward(ParseElementEnhance):
 
     def __ilshift__(self, other) -> "Forward":
         if not isinstance(other, ParserElement):
+            branches_Forward_ilshift[90] = True
             return NotImplemented
 
+        branches_Forward_ilshift[91] = True
         return self << other
 
     def __or__(self, other) -> "ParserElement":
@@ -6111,6 +6119,23 @@ def printCoverageResults() -> None:
         "22: ",
         str(branches_Or_ixor[22]),
         "\n",
+        "Branches taken in function __iadd__() from class Add, in core.py:\n",
+        "80: ",
+        str(branches_And_iadd[80]),
+        "\n",
+        "81: ",
+        str(branches_And_iadd[81]),
+        "\n",
+        "82: ",
+        str(branches_And_iadd[82]),
+        "\n",
+        "Branches taken in function __ilshift__() from class Forward, in core.py:\n",
+        "90:",
+        str(branches_Forward_ilshift[90]),
+        "\n",
+        "91:",
+        str(branches_Forward_ilshift[91])
+
     ]
 
     with open("coverage_results.txt", "w") as file:
