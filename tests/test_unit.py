@@ -212,6 +212,7 @@ class Test01b_PyparsingUnitTestUtilitiesTests(TestCase):
                     except ParseException as pe:
                         pass
 
+
 class TestInitWhite(TestCase):
     def testWhiteMaxValue(self):
         whitespace_token = pp.White(max=5)
@@ -222,11 +223,13 @@ class TestInitWhite(TestCase):
         whitespace_token = pp.White(exact=3)
         self.assertEqual(whitespace_token.maxLen, 3)
         self.assertEqual(whitespace_token.minLen, 3)
-        
+
+
 class TestPreParse(TestCase):
     def testPreParseZero(self):
         loc = pp.LineStart.preParse(self, "test string", 0)
         self.assertEqual(loc, 0)
+
 
 class Test02_WithoutPackrat(ppt.TestParseResultsAsserts, TestCase):
     suite_context = None
@@ -9681,6 +9684,40 @@ class Test02_WithoutPackrat(ppt.TestParseResultsAsserts, TestCase):
         self.assertTrue(
             len(results) > 0, "MatchFirst error - not iterating over all choices"
         )
+
+    def testMatchFirstIor(self):
+        # Branch 1 and 3: Pass a string
+        match_first_instance = pp.core.MatchFirst([pp.core.ParseExpression("initial")])
+        match_first_instanceCopy = match_first_instance
+        testStr = "hello"
+
+        match_first_instance |= testStr
+        testStr = match_first_instanceCopy._literalStringClass(testStr)
+        self.assertEqual(match_first_instance, match_first_instanceCopy.append(testStr))
+
+        # Branch 2: Pass an instance not of ParseElement
+        new_match_first_instance = pp.core.MatchFirst(
+            [pp.core.ParseExpression("initial")]
+        )
+
+        with self.assertRaises(TypeError):
+            new_match_first_instance |= 4
+
+    def testOrIxor(self):
+        # Branch 1 and 3: Pass a string
+        or_instance = pp.core.Or([pp.core.ParseExpression("initial")])
+        or_instanceCopy = or_instance
+        testStr = "hello"
+
+        or_instance ^= testStr
+        testStr = or_instanceCopy._literalStringClass(testStr)
+        self.assertEqual(or_instance, or_instanceCopy.append(testStr))
+
+        # Branch 2: Pass an instance not of ParseElement
+        new_or_instance = pp.core.Or([pp.core.ParseExpression("initial")])
+
+        with self.assertRaises(TypeError):
+            new_or_instance ^= 4
 
     def testStreamlineOfExpressionsAfterSetName(self):
         bool_constant = pp.Literal("True") | "true" | "False" | "false"
