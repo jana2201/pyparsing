@@ -11,3 +11,11 @@ Branches taken in function __init__() from class White, in core.py:
 Branches taken in function preParse() from class LineStart, in core.py:
 70: True
 71: True
+Branches taken in function __ior__() from class MatchFirst, in core.py:
+10: True
+11: True
+12: True
+Branches taken in function __ixor__() from class Or, in core.py:
+20: True
+21: True
+22: True

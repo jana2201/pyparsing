@@ -56,6 +56,8 @@ branches_CharsNotIn_generateDefaultName = {40: False, 41: False}
 branches_Each_iand = {50: False, 51: False}
 branches_init = {60: False, 61: False, 62: False}
 branches_preParse = {70: False, 71: False}
+branches_MatchFirst_ior = {10: False, 11: False, 12: False}
+branches_Or_ixor = {20: False, 21: False, 22: False}
 
 #
 # Copyright (c) 2003-2022  Paul T. McGuire
@@ -4180,9 +4182,12 @@ class Or(ParseExpression):
 
     def __ixor__(self, other):
         if isinstance(other, str_type):
+            branches_Or_ixor[20] = True
             other = self._literalStringClass(other)
         if not isinstance(other, ParserElement):
+            branches_Or_ixor[21] = True
             return NotImplemented
+        branches_Or_ixor[22] = True
         return self.append(other)  # Or([self, other])
 
     def _generateDefaultName(self) -> str:
@@ -4287,9 +4292,12 @@ class MatchFirst(ParseExpression):
 
     def __ior__(self, other):
         if isinstance(other, str_type):
+            branches_MatchFirst_ior[10] = True
             other = self._literalStringClass(other)
         if not isinstance(other, ParserElement):
+            branches_MatchFirst_ior[11] = True
             return NotImplemented
+        branches_MatchFirst_ior[12] = True
         return self.append(other)  # MatchFirst([self, other])
 
     def _generateDefaultName(self) -> str:
@@ -6078,6 +6086,26 @@ def printCoverageResults() -> None:
         "\n",
         "71: ",
         str(branches_preParse[71]),
+        "\n",
+        "Branches taken in function __ior__() from class MatchFirst, in core.py:\n",
+        "10: ",
+        str(branches_MatchFirst_ior[10]),
+        "\n",
+        "11: ",
+        str(branches_MatchFirst_ior[11]),
+        "\n",
+        "12: ",
+        str(branches_MatchFirst_ior[12]),
+        "\n",
+        "Branches taken in function __ixor__() from class Or, in core.py:\n",
+        "20: ",
+        str(branches_Or_ixor[20]),
+        "\n",
+        "21: ",
+        str(branches_Or_ixor[21]),
+        "\n",
+        "22: ",
+        str(branches_Or_ixor[22]),
         "\n",
     ]
 
