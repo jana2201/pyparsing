@@ -230,6 +230,43 @@ class TestPreParse(TestCase):
         loc = pp.LineStart.preParse(self, "test string", 0)
         self.assertEqual(loc, 0)
 
+class TestAddIadd(TestCase):
+    def testAddIaddInit(self):
+        # other is instance of str_type
+        add_instance = pp.Keyword("ket") + pp.Keyword("chup")
+        add_instanceCopy = add_instance
+        testStr = "fine"
+
+        add_instance += testStr
+        testStr = add_instanceCopy._literalStringClass(testStr)
+
+        self.assertEqual(add_instance, add_instanceCopy.append(testStr))
+
+        # other is not instance of str_type and not instance of ParserElement
+        exp = pp.Keyword("cheese") + pp.Keyword("cat")
+        testInt = 10
+
+        with self.assertRaises(TypeError):
+            exp += testInt
+
+class TestForwardIlshift(TestCase):
+    def testForwarsIlshiftInit(self):
+        # Branch 1
+        forward_instance = pp.Forward() << pp.Keyword("forward")
+        forward_instanceCopy = forward_instance
+
+        testStr = "okay"
+
+        forward_instance <<= testStr
+        expected_Str = forward_instanceCopy << testStr
+        self.assertEqual(forward_instance, expected_Str)
+
+        exp = pp.Forward() << pp.Keyword("backward")
+        testInt = 10
+
+        with self.assertRaises(TypeError):
+            exp <<= testInt
+
 
 class Test02_WithoutPackrat(ppt.TestParseResultsAsserts, TestCase):
     suite_context = None
